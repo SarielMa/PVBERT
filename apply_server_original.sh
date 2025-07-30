@@ -10,13 +10,13 @@
 #SBATCH --constraint="a5000"
 #SBATCH --mem=32G
 #SBATCH --partition=gpu
-#SBATCH --output=bert_no_pinfo.txt
+#SBATCH --output=bert_original.txt
 
 module load CUDA/12.6
 module load miniconda
 conda activate amia2025
 cd /home/lm2445/project/bert_0620/exp_message_refine_0711/
-sh run_all.sh
-python eval_all_no_pinfo.py
-
+bash run_all.sh original /home/lm2445/palmer_scratch/results_071325_class
+RESULT_PATH="/home/lm2445/palmer_scratch/results_071325_class"
+python eval_all.py -m original -i "$RESULT_PATH"_original
 # sleep 604800

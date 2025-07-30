@@ -1,30 +1,41 @@
 #!/bin/bash
 
-# Activate conda environment (if needed)
-# source  ~/.bashrc
-conda activate amia2025
-module load CUDA/12.6
+# Check if two arguments were provided
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <topic> <result_path>"
+    exit 1
+fi
 
+# Get the values from the command-line arguments
+TOPIC=$1
+RESULT_PATH=$2
 
 # Run each training script one by one
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i eppc_bert_large
+python train_all.py -i eppc_bert_large -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i eppc_bert_base
+python train_all.py -i eppc_bert_base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i bert-large-uncased
+python train_all.py -i bert-large-uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i bert-base-uncased
+python train_all.py -i bert-base-uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i emilyalsentzer/Bio_ClinicalBERT
+python train_all.py -i emilyalsentzer/Bio_ClinicalBERT -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i allenai/scibert_scivocab_uncased
+python train_all.py -i allenai/scibert_scivocab_uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i dmis-lab/biobert-v1.1
+python train_all.py -i dmis-lab/biobert-v1.1 -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i cambridgeltl/SapBERT-from-PubMedBERT-fulltext
+python train_all.py -i cambridgeltl/SapBERT-from-PubMedBERT-fulltext -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "Starting training for one model..."
-python train_all_no_pinfo.py -i Twitter/twhin-bert-base
-echo "Starting training for one model..."
-python train_all_no_pinfo.py -i Twitter/twhin-bert-large
+python train_all.py -i Twitter/twhin-bert-base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+
 echo "All training jobs completed!"

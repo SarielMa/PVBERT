@@ -8,6 +8,7 @@ from datetime import datetime
 def get_confusion_matrix(y_true, y_pred, label_save, classlabel_list, stamp):
     cm = multilabel_confusion_matrix(y_true, y_pred)
     rows = []
+    ret = []
     total_tp = total_fp = total_fn = 0
     for i, cm_i in enumerate(cm):
         tn, fp, fn, tp = cm_i.ravel()
@@ -26,6 +27,7 @@ def get_confusion_matrix(y_true, y_pred, label_save, classlabel_list, stamp):
             "Recall": recall,
             "F1": f1
         })
+
         
         total_tp += tp
         total_fp += fp
@@ -51,10 +53,15 @@ def get_confusion_matrix(y_true, y_pred, label_save, classlabel_list, stamp):
     # Save to CSV
     df_metrics = pd.DataFrame(rows)
     #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    df_metrics.to_csv(stamp + label_save + "_per_label_with_micro_metrics_for_last_model.csv", index=False)
+    #df_metrics.to_csv(stamp + label_save + "_per_label_with_micro_metrics_for_last_model.csv", index=False)
+    return df_metrics
+    
 
 def my_eval_for_classification(pred_codes, true_codes, codes, pred_sub_codes, true_sub_codes, subcodes, pred_combo, true_combo, combos, stamp):
-    return compute_classification_metric(pred_codes, true_codes, "code", codes, stamp) + compute_classification_metric(pred_sub_codes, true_sub_codes, "subcode", subcodes, stamp) + compute_classification_metric(pred_combo, true_combo, "combos", combos, stamp)
+    res1, m1 = compute_classification_metric(pred_codes, true_codes, "code", codes, stamp) 
+    res2, m2 = compute_classification_metric(pred_sub_codes, true_sub_codes, "subcode", subcodes, stamp)
+    res3, m3 = compute_classification_metric(pred_combo, true_combo, "combos", combos, stamp)
+    return res1 + res2 + res3, m1, m2, m3
 
 def compute_classification_metric(preds, true_labels, what, label_list, stamp):
     y_true = np.array(true_labels)
@@ -66,8 +73,8 @@ def compute_classification_metric(preds, true_labels, what, label_list, stamp):
     print("Micro F1     :", f1)
     print("Precision    :", prec)
     print("Recall       :", recall)
-    get_confusion_matrix(true_labels, preds, what, label_list, stamp)
-    return [prec, recall, f1]
+    matrix = get_confusion_matrix(true_labels, preds, what, label_list, stamp)
+    return [prec, recall, f1], matrix
 
 def compute_classification_metric_with_matrix(preds, true_labels, id2label=None):
     y_true = np.array(true_labels)
