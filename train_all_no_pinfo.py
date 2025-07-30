@@ -18,7 +18,7 @@ parser.add_argument("-i", "--Input", help = "the path to input model to be train
 args = parser.parse_args()
 
 
-base_path = "/home/lm2445/palmer_scratch/results_071125_class_no_pinfo"
+base_path = "/home/lm2445/palmer_scratch/results_071325_class_no_pinfo"
 if not os.path.exists(base_path):
     os.makedirs(base_path)
 if args.Input == "eppc_bert_large":
@@ -104,7 +104,7 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=8,
     learning_rate=5e-5,
     weight_decay=0.01,
-    save_total_limit=2,               # Keep only the best model
+    save_total_limit=10,               # Keep only the best model
     load_best_model_at_end=True,      # Load the best model at the end of training
     metric_for_best_model="eval_micro_f1", # Choose metric to determine best model
     greater_is_better=True,          # Lower eval_loss is better

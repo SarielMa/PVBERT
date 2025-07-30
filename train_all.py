@@ -13,13 +13,18 @@ parser = argparse.ArgumentParser()
 
 # Adding optional argument
 parser.add_argument("-i", "--Input", help = "the path to input model to be trained")
-parser.add_argument("-p", "--Path", help = "the path to input model to be trained")
+parser.add_argument("-p", "--Path", help = "the output path")
+parser.add_argument("-m", "--Method", help = "which method to train: original, pinfo, topic")
 
 # Read arguments from command line
 args = parser.parse_args()
 
-print ("this is for topics")
-base_path = "/home/lm2445/palmer_scratch/results_071325_class_topics"
+print (f"this method is {args.Method}")
+
+train_path = f"stratified_train_data_{args.Method}.json"
+test_path = f"stratified_test_data_{args.Method}.json"
+#base_path = "/home/lm2445/palmer_scratch/results_071325_class_topics"
+base_path = args.Path
 if not os.path.exists(base_path):
     os.makedirs(base_path)
 if args.Input == "eppc_bert_large":
@@ -42,9 +47,9 @@ else:
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Load Processed Data
-with open("stratified_train_data_topics.json", "r") as f:
+with open(train_path, "r") as f:
     train_data = json.load(f)
-with open("stratified_test_data_topics.json", "r") as f:
+with open(test_path, "r") as f:
     val_data = json.load(f)
 print (f"training size is {len(train_data)}")
 print (f"test size is {len(val_data)}")
@@ -100,12 +105,12 @@ training_args = TrainingArguments(
     output_dir= output_dir,        # Where to save the model
     evaluation_strategy="epoch",      # Evaluate at the end of every epoch
     save_strategy="epoch",            # Save model only at the end of each epoch
-    num_train_epochs=50,
+    num_train_epochs=100,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     learning_rate=5e-5,
     weight_decay=0.01,
-    save_total_limit=10,               # Keep only the best model
+    save_total_limit=5,               # Keep only the best model
     load_best_model_at_end=True,      # Load the best model at the end of training
     metric_for_best_model="eval_micro_f1", # Choose metric to determine best model
     greater_is_better=True,          # Lower eval_loss is better

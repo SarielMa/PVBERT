@@ -10,13 +10,13 @@
 #SBATCH --constraint="a5000"
 #SBATCH --mem=32G
 #SBATCH --partition=gpu
-#SBATCH --output=bert.txt
+#SBATCH --output=bert_topic.txt
 
 module load CUDA/12.6
 module load miniconda
 conda activate amia2025
 cd /home/lm2445/project/bert_0620/exp_message_refine_0711/
-sh run_all_pinfo_topics.sh
-python eval_all_topics.py
-
+bash run_all.sh topic /home/lm2445/palmer_scratch/results_071325_class
+RESULT_PATH="/home/lm2445/palmer_scratch/results_071325_class"
+python eval_all.py -m topic -i "$RESULT_PATH"_topic
 # sleep 604800
