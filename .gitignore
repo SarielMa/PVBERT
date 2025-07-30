@@ -39,4 +39,5 @@ Thumbs.db
 # data and model #
 ####################
 *.json
+*.ipynb_checkpoints*
 

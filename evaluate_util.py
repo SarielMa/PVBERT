@@ -23,14 +23,20 @@ def eval_for_classification(model_path, trainset_path, testset_path, stamp):
 
     # Recover label space from model if possible
     # Rebuild from train+test
-    all_labels = set()
-    for dataset in [trainset, testset]:
-        for example in dataset:
-            for label in example["labels"]:
-                all_labels.add(label)
-    all_labels = sorted(all_labels)
-    label2id = {label: i for i, label in enumerate(all_labels)}
-    id2label = {i: l for l, i in label2id.items()}
+    if hasattr(model.config, "label2id") and model.config.label2id::
+        label2id = {k: int(v) for k, v in model.config.label2id.items()}
+        id2label = {int(v): k for k, v in model.config.label2id.items()}
+        all_labels = sorted(label2id.keys())
+        print ("Loaded label2id from model config")
+    else:
+        all_labels = set()
+        for dataset in [trainset, testset]:
+            for example in dataset:
+                for label in example["labels"]:
+                    all_labels.add(label)
+        all_labels = sorted(all_labels)
+        label2id = {label: i for i, label in enumerate(all_labels)}
+        id2label = {i: l for l, i in label2id.items()}
     
     # Build code/subcode label sets
     # all_labels = sorted({l for ds in [trainset, testset] for ex in ds for l in ex["labels"]})
@@ -54,8 +60,7 @@ def eval_for_classification(model_path, trainset_path, testset_path, stamp):
     unique_subcodes = sorted(set(subcode_list))
     unique_subcodes.remove("None")
     unique_combos = sorted(set(combo_list))
-    # code2id = {c: i for i, c in enumerate(unique_codes)}
-    # subcode2id = {s: i for i, s in enumerate(unique_subcodes)}
+
 
     def encode(example):
         label_vector = [0] * len(label2id)
