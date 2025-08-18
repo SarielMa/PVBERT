@@ -39,6 +39,7 @@ Thumbs.db
 # data and model #
 ####################
 *.json
+*.jsonl
 *.ipynb_checkpoints*
 
 PPCBERTopic/bertopic/my_bertopic_model_HDBSCAN
