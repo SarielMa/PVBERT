@@ -28,7 +28,6 @@ def get_confusion_matrix(y_true, y_pred, label_save, classlabel_list, stamp):
             "F1": f1
         })
 
-        
         total_tp += tp
         total_fp += fp
         total_fn += fn
@@ -95,112 +94,6 @@ def compute_classification_metric_with_matrix(preds, true_labels, id2label=None)
 
     return [prec, recall, f1]
 
-def my_eval_code_only(true_codes, pred_codes, true_spans, pred_spans, code_list):
-
-    code_mlb = MultiLabelBinarizer(classes=code_list)
-    #sub_code_mlb = MultiLabelBinarizer(classes=subcode_list)
-    
-    ## calculate code
-    true_code_binary = code_mlb.fit_transform(true_codes)
-    pred_code_binary = code_mlb.transform(pred_codes)
-    
-    precision_code = precision_score(true_code_binary, pred_code_binary, average='micro')
-    recall_code = recall_score(true_code_binary, pred_code_binary, average='micro')
-    f1_code = f1_score(true_code_binary, pred_code_binary, average='micro')
-    print(f"code Precision: {precision_code:.4f}, Recall: {recall_code:.4f}, F1 Score: {f1_code:.4f}")
-    # get the span
-    jaccard = 0.6
-    precision_span, recall_span, f1_span = relaxed_match_evaluation_with_full_containment(true_spans,pred_spans, jaccard_threshold=jaccard)
-    print(f"span Precision: {precision_span:.4f}, Recall: {recall_span:.4f}, F1 Score: {f1_span:.4f}, jaccard threshold is {jaccard}")
-    return [precision_code, recall_code, f1_code, 
-            0, 0, 0, 
-            precision_span, recall_span, f1_span]
-
-
-def my_eval(true_codes, pred_codes, true_sub_codes, pred_sub_codes, true_spans, pred_spans, code_list, subcode_list):
-    # results is a list of list of dictionaries
-    # data is directly from the json
-    # eval the code
-    ## code
-    # true_codes = []
-    # pred_codes = []
-    
-    # ##  sub-code
-    # true_sub_codes = []
-    # pred_sub_codes = []
-    
-    # ##  span
-    # true_spans = []
-    # pred_spans = []
-
-        
-    # for i, line in enumerate(results):
-    #     code = [Code_mapping[anno.get("code")].lower() for anno in data[i]["annotations"]]
-    #     pred_code = [pred["Code"].lower() for pred in line]
-    #     pred_code = list(set(pred_code))
-    #     true_codes.append(code)
-    #     pred_codes.append(pred_code)
-    
-    #     sub_code = [Sub_Code_mapping[anno.get("subcode")].lower() for anno in data[i]["annotations"]]
-    #     pred_sub_code = [pred["Sub-code"].lower() for pred in line]
-    #     pred_sub_code = list(set(pred_sub_code))
-    #     true_sub_codes.append(sub_code)
-    #     pred_sub_codes.append(pred_sub_code)
-    
-    #     span = [anno.get("text").lower() for anno in data[i]["annotations"]]
-    #     pred_span = [pred["Span"].lower() for pred in line]
-    #     true_spans.append(span)
-    #     pred_spans.append(pred_span)
-        
-    #Code_set_eval = [v.lower() for v in Code_mapping.values()]
-    #Sub_Code_set_eval = [v.lower() for v in set(list(Sub_Code_mapping.values()))]
-    
-    code_mlb = MultiLabelBinarizer(classes=code_list)
-    sub_code_mlb = MultiLabelBinarizer(classes=subcode_list)
-    
-    ## calculate code
-    true_code_binary = code_mlb.fit_transform(true_codes)
-    pred_code_binary = code_mlb.transform(pred_codes)
-    
-    precision_code = precision_score(true_code_binary, pred_code_binary, average='micro')
-    recall_code = recall_score(true_code_binary, pred_code_binary, average='micro')
-    f1_code = f1_score(true_code_binary, pred_code_binary, average='micro')
-    print(f"code Precision: {precision_code:.4f}, Recall: {recall_code:.4f}, F1 Score: {f1_code:.4f}")
-    ## calculate sub-code
-    true_subcode_binary = sub_code_mlb.fit_transform(true_sub_codes)
-    pred_subcode_binary = sub_code_mlb.transform(pred_sub_codes)
-    precision_subcode = precision_score(true_subcode_binary, pred_subcode_binary, average='micro')
-    recall_subcode = recall_score(true_subcode_binary, pred_subcode_binary, average='micro')
-    f1_subcode = f1_score(true_subcode_binary, pred_subcode_binary, average='micro')
-    print(f"subcode Precision: {precision_subcode:.4f}, Recall: {recall_subcode:.4f}, F1 Score: {f1_subcode:.4f}")
-    jaccard = 0.6
-    precision_span, recall_span, f1_span = relaxed_match_evaluation_with_full_containment(true_spans,pred_spans, jaccard_threshold=jaccard)
-    print(f"span Precision: {precision_span:.4f}, Recall: {recall_span:.4f}, F1 Score: {f1_span:.4f}, jaccard threshold is {jaccard}")
-    return [precision_code, recall_code, f1_code, 
-            precision_subcode, recall_subcode, f1_subcode, 
-            precision_span, recall_span, f1_span]
-    # results.append([{"code p": precision_code}, 
-    #                 {"code r": recall_code},
-    #                 {"code f1": f1_code},
-    #                 {"subcode p": precision_subcode}, 
-    #                 {"subcode r": recall_subcode},
-    #                 {"subcode f1": f1_subcode},
-    #                 {"span p": precision_span}, 
-    #                 {"span r": recall_span},
-    #                 {"span f1": f1_span}
-    #                ])
-    # table = [
-    #         ["code p", precision_code], 
-    #         ["code r", recall_code],
-    #         ["code f1", f1_code],
-    #         ["subcode p", precision_subcode], 
-    #         ["subcode r", recall_subcode],
-    #         ["subcode f1", f1_subcode],
-    #         ["span p", precision_span], 
-    #         ["span r", recall_span],
-    #         ["span f1", f1_span]
-    #         ]
-    # return results, table
 
 def calculate_jaccard_for_tokens(phrase1, phrase2):
     """
