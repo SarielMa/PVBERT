@@ -1,4 +1,4 @@
-name: finben_linhai
+name: env_name
 channels:
   - defaults
   - conda-forge
@@ -256,4 +256,4 @@ dependencies:
       - yarl==1.20.1
       - zipp==3.23.0
       - zstandard==0.23.0
-prefix: /home/lm2445/.conda/envs/finben_linhai
+prefix: env_path
