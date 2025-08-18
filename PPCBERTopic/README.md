@@ -1,7 +1,19 @@
-# PPCBERT
+# PPCBERTopic
 
-## Put the pre-trained bertopic model here
+This folder should contain the pre-trained BERTopic model used in the **PPCInsight** framework.
 
-## pre-trained PPCBERTopic are avaiable at: https://huggingface.co/lm2445/PPCBERTopic
+## 📥 Download Pretrained Model
 
-## a try.py script is available to test if this topic model is ready to run on your system.
+- **PPCBERTopic**  
+  🔗 https://huggingface.co/lm2445/PPCBERTopic
+
+Download the model from the link above and place it in this folder.
+
+## Quick Test
+
+A `try.py` script is included to verify that the topic model loads correctly and is compatible with your system.  
+To run the test:
+
+```bash
+python try.py
+```

@@ -1,8 +1,15 @@
 # PPCBERT
 
-## Put the pre-trained bert models here
+This folder should contain the pre-trained BERT models used in the **PPCInsight** framework.
 
-## pre-trained PPCBERTs are avaiable at:
+## Download Pretrained Models
 
-### PPCBERT-base: https://huggingface.co/lm2445/PPCBERT-base
-### PPCBERT-large: https://huggingface.co/lm2445/PPCBERT-large
+The following PPCBERT models are available on Hugging Face:
+
+- **PPCBERT-base**  
+  🔗 https://huggingface.co/lm2445/PPCBERT-base
+
+- **PPCBERT-large**  
+  🔗 https://huggingface.co/lm2445/PPCBERT-large
+
+Download the models from the links above and place them in this folder before running any experiments.
