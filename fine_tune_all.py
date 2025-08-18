@@ -7,33 +7,31 @@ from sklearn.metrics import f1_score, precision_score, recall_score
 import matplotlib.pyplot as plt
 import os
 
-
 # Initialize parser
 parser = argparse.ArgumentParser()
 
 # Adding optional argument
-parser.add_argument("-i", "--Input", help = "the path to input model to be trained")
-parser.add_argument("-p", "--Path", help = "the output path")
-parser.add_argument("-m", "--Method", help = "which method to train: original, pinfo, topic")
+parser.add_argument("-i", "--Input", help = "Please input the path to input model to be trained")
+parser.add_argument("-p", "--Path", help = "Please input the output path to store the model checkpoints")
+parser.add_argument("-m", "--Method", help = "Option about which method to fine-tune: original or topic")
 
 # Read arguments from command line
 args = parser.parse_args()
 
 print (f"this method is {args.Method}")
 
-train_path = f"stratified_train_data_{args.Method}.json"
-test_path = f"stratified_test_data_{args.Method}.json"
-#base_path = "/home/lm2445/palmer_scratch/results_071325_class_topics"
+train_path = f"data/stratified_train_data_{args.Method}.json"
+test_path = f"data/stratified_test_data_{args.Method}.json"
 base_path = args.Path
 if not os.path.exists(base_path):
     os.makedirs(base_path)
 if args.Input == "eppc_bert_large":
     print("the inputing model is : % s" % args.Input)
-    model_name = "/home/lm2445/project/bert-mlm-eppc-large/"
+    model_name = "PPCBERTs/PPCBERT-large/"
     output_dir = base_path + "/eppc_model_" + args.Input
 elif args.Input == "eppc_bert_base":
     print("the inputing model is : % s" % args.Input)
-    model_name = "/home/lm2445/project/bert-mlm-eppc_50epoch/"
+    model_name = "PPCBERTs/PPCBERT-base/"
     output_dir = base_path + "/eppc_model_" + args.Input
 elif args.Input:
     print("the inputing model is : % s" % args.Input)
@@ -41,8 +39,6 @@ elif args.Input:
     output_dir = base_path + "/eppc_model_" + args.Input
 else:
     raise Exception("Please choose a model")
-   
-
 # Load Tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -98,9 +94,6 @@ model = AutoModelForSequenceClassification.from_pretrained(
     label2id=label2id,
 )
 
-
-
-
 training_args = TrainingArguments(
     output_dir= output_dir,        # Where to save the model
     evaluation_strategy="epoch",      # Evaluate at the end of every epoch
@@ -110,9 +103,8 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=8,
     learning_rate=5e-5,
     weight_decay=0.01,
-    save_total_limit=5,               # Keep only the best model
+    save_total_limit=1,               # Keep only the last model
     load_best_model_at_end=True,      # Load the best model at the end of training
-    metric_for_best_model="eval_micro_f1", # Choose metric to determine best model
     greater_is_better=True,          # Lower eval_loss is better
     logging_dir="./logs",             # Log directory
     logging_strategy="steps",
@@ -123,17 +115,6 @@ training_args = TrainingArguments(
     # report_to="tensorboard",          # optional
 )
 
-
-
-def compute_metrics(pred):
-    preds = (pred.predictions > 0).astype(int)
-    labels = pred.label_ids
-    return {
-        "eval_micro_f1": f1_score(labels, preds, average="micro", zero_division=0),
-        "eval_macro_f1": f1_score(labels, preds, average="macro", zero_division=0),
-        "eval_precision": precision_score(labels, preds, average="micro", zero_division=0),
-        "eval_recall": recall_score(labels, preds, average="micro", zero_division=0),
-    }
 # Train Model
 trainer = Trainer(
     model=model,
@@ -141,7 +122,6 @@ trainer = Trainer(
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
     tokenizer=tokenizer,
-    compute_metrics=compute_metrics
 )
 
 trainer.train()
@@ -163,7 +143,7 @@ log_history = trainer_state["log_history"]
 steps = []
 train_loss = []
 eval_loss = []
-f1_scores = []
+
 eval_steps = []
 
 for log in log_history:
@@ -173,15 +153,12 @@ for log in log_history:
     if "eval_loss" in log:
         eval_steps.append(log["step"])
         eval_loss.append(log["eval_loss"])
-        f1_scores.append(log.get("eval_micro_f1", None))
 
 # Plot
 plt.figure(figsize=(12, 6))
 plt.plot(steps, train_loss, label="Train Loss", marker='o')
 plt.plot(eval_steps, eval_loss, label="Eval Loss", marker='x')
 
-if any(f1_scores):
-    plt.plot(eval_steps, f1_scores, label="Eval Micro F1", marker='s')
 
 plt.xlabel("Training Steps")
 plt.ylabel("Metric Value")

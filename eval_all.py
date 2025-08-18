@@ -1,6 +1,6 @@
 import os
 import csv
-from evaluate_util import eval_for_classification as my_eval
+from utils.evaluate_util import eval_for_classification as my_eval
 import argparse
 import numpy as np
 import pandas as pd
@@ -9,7 +9,6 @@ parser = argparse.ArgumentParser()
 
 # Adding optional argument
 parser.add_argument("-i", "--Input", help = "the base path to input model to be tested")
-#parser.add_argument("-p", "--Path", help = "the output path")
 parser.add_argument("-m", "--Method", help = "which method to train: original, pinfo, topic")
 
 # Read arguments from command line
@@ -27,7 +26,6 @@ models = [
     "eppc_bert_large"]
 
 
-#prefix = "/home/lm2445/palmer_scratch/results_071125_class/eppc_model_"
 prefix = args.Input
 suffix = "checkpoint-"
 stamp = args.Method # e.g. topic
@@ -78,6 +76,6 @@ for i, m in enumerate(models):
         row.extend([mean, std])
     csv_res.append([m] + [str(round(i, 4) * 100)  for i in row])
 
-with open(f"{stamp}_output_0714.csv", 'w', newline='', encoding='utf-8') as f:
+with open(f"{stamp}_output.csv", 'w', newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
     writer.writerows(csv_res) 
