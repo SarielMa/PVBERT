@@ -1,6 +1,6 @@
 import torch
 import json
-from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments, AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoConfig, BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments, AutoTokenizer, AutoModelForSequenceClassification
 from torch.utils.data import Dataset
 import argparse
 from sklearn.metrics import f1_score, precision_score, recall_score
@@ -86,13 +86,17 @@ class SentenceMultiLabelDataset(Dataset):
 train_dataset = SentenceMultiLabelDataset(train_data, tokenizer, label2id)
 val_dataset = SentenceMultiLabelDataset(val_data, tokenizer, label2id)
 
-model = AutoModelForSequenceClassification.from_pretrained(
-    model_name,
-    num_labels=len(label_list),
-    problem_type="multi_label_classification",
-    id2label=id2label,
-    label2id=label2id,
-)
+# model = AutoModelForSequenceClassification.from_pretrained(
+#     model_name,
+#     num_labels=len(label_list),
+#     problem_type="multi_label_classification",
+#     id2label=id2label,
+#     label2id=label2id,
+# )
+config = AutoConfig.from_pretrained(model_name, num_labels=len(label_list))
+config.id2label = id2label
+config.label2id = label2id
+model = AutoModelForSequenceClassification.from_pretrained(model_name, config=config)
 
 training_args = TrainingArguments(
     output_dir= output_dir,        # Where to save the model
