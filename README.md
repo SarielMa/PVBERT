@@ -1,6 +1,6 @@
-# PPCInsight
+# Patient voice Miner
 
-This repository contains the official implementation of **PPCInsight**, a system proposed in our paper for structured information extraction from electronic patient-provider communication (EPPC) messages. The method combines a domain-specific BERT model (`PPCBERT`) with topic-enhanced inputs from a pre-trained `PPCBERTopic` module to improve multi-label classification of communication behaviors.
+This repository contains the official implementation of **Patient voice Miner**, a system proposed in our paper for structured information extraction from electronic patient-provider communication (EPPC) messages. The method combines a domain-specific BERT model (`PPCBERT`) with topic-enhanced inputs from a pre-trained `PPCBERTopic` module to improve multi-label classification of communication behaviors.
 
 ---
 
