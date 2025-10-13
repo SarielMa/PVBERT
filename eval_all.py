@@ -46,7 +46,7 @@ def get_matrix(results, name):
     agg_df.to_csv(name + "mean_std_per_class_table.csv", index=False)
         
 for i, m in enumerate(models):
-    subpath = "eppc_model_" + m
+    subpath = "pv_model_" + m
     path = os.path.join(prefix, subpath)
     print (path)
     folders = [name for name in os.listdir(path)

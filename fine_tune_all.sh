@@ -12,10 +12,10 @@ RESULT_PATH=$2
 
 # Run each training script one by one
 echo "Starting training for one model..."
-python fine_tune_all.py -i eppc_bert_large -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all.py -i pv_bert_large -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all.py -i eppc_bert_base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all.py -i pv_bert_base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
 python fine_tune_all.py -i bert-large-uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"

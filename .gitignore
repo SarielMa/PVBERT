@@ -42,4 +42,15 @@ Thumbs.db
 *.jsonl
 *.ipynb_checkpoints*
 
-PPCBERTopic/bertopic/my_bertopic_model_HDBSCAN
+PVBERTopic/my_bertopic_model_HDBSCAN
+# typical deep learning .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pt
+*.bin
+*.safetensors
+*.npy
+*.pkl
+*.csv
+*.tsv

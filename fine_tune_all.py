@@ -25,18 +25,18 @@ test_path = f"data/stratified_test_data_{args.Method}.json"
 base_path = args.Path
 if not os.path.exists(base_path):
     os.makedirs(base_path)
-if args.Input == "eppc_bert_large":
+if args.Input == "pv_bert_large":
     print("the inputing model is : % s" % args.Input)
-    model_name = "PPCBERTs/PPCBERT-large/"
-    output_dir = base_path + "/eppc_model_" + args.Input
-elif args.Input == "eppc_bert_base":
+    model_name = "PVBERTs/PVBERT_large/checkpoint-387500"
+    output_dir = base_path + "/pv_model_" + args.Input
+elif args.Input == "pv_bert_base":
     print("the inputing model is : % s" % args.Input)
-    model_name = "PPCBERTs/PPCBERT-base/"
-    output_dir = base_path + "/eppc_model_" + args.Input
+    model_name = "PVBERTs/PVBERT_base/checkpoint-470500/"
+    output_dir = base_path + "/pv_model_" + args.Input
 elif args.Input:
     print("the inputing model is : % s" % args.Input)
     model_name = args.Input
-    output_dir = base_path + "/eppc_model_" + args.Input
+    output_dir = base_path + "/pv_model_" + args.Input
 else:
     raise Exception("Please choose a model")
 # Load Tokenizer
@@ -102,7 +102,7 @@ training_args = TrainingArguments(
     output_dir= output_dir,        # Where to save the model
     evaluation_strategy="epoch",      # Evaluate at the end of every epoch
     save_strategy="epoch",            # Save model only at the end of each epoch
-    num_train_epochs=100,
+    num_train_epochs=50,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     learning_rate=5e-5,
