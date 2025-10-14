@@ -3,7 +3,7 @@ import json
 from transformers import AutoTokenizer, AutoModel, AutoModelForTokenClassification, AutoModelForSequenceClassification
 from sklearn.metrics import precision_recall_fscore_support
 from collections import defaultdict
-from my_utils import compute_classification_metric, my_eval_for_classification
+from utils.my_utils import my_eval_for_classification
 import argparse
 from sklearn.metrics import f1_score, precision_score, recall_score, classification_report
 import numpy as np
@@ -23,7 +23,7 @@ def eval_for_classification(model_path, trainset_path, testset_path, stamp):
 
     # Recover label space from model if possible
     # Rebuild from train+test
-    if hasattr(model.config, "label2id") and model.config.label2id::
+    if hasattr(model.config, "label2id") and model.config.label2id:
         label2id = {k: int(v) for k, v in model.config.label2id.items()}
         id2label = {int(v): k for k, v in model.config.label2id.items()}
         all_labels = sorted(label2id.keys())

@@ -6,6 +6,7 @@ import argparse
 from sklearn.metrics import f1_score, precision_score, recall_score
 import matplotlib.pyplot as plt
 import os
+import numpy as np
 
 # Initialize parser
 parser = argparse.ArgumentParser()
@@ -22,16 +23,18 @@ print (f"this method is {args.Method}")
 
 train_path = f"data/stratified_train_data_{args.Method}.json"
 test_path = f"data/stratified_test_data_{args.Method}.json"
+#base_path = f"{args.Path}_{args.Method}" 
 base_path = args.Path
 if not os.path.exists(base_path):
+    print (f"model will be saved to {base_path}")
     os.makedirs(base_path)
 if args.Input == "pv_bert_large":
     print("the inputing model is : % s" % args.Input)
-    model_name = "PVBERTs/PVBERT_large/checkpoint-387500"
+    model_name = "PVBERTs/PV_large/checkpoint-387500"
     output_dir = base_path + "/pv_model_" + args.Input
 elif args.Input == "pv_bert_base":
     print("the inputing model is : % s" % args.Input)
-    model_name = "PVBERTs/PVBERT_base/checkpoint-470500/"
+    model_name = "PVBERTs/PV_base/checkpoint-470500"
     output_dir = base_path + "/pv_model_" + args.Input
 elif args.Input:
     print("the inputing model is : % s" % args.Input)
@@ -51,6 +54,17 @@ print (f"training size is {len(train_data)}")
 print (f"test size is {len(val_data)}")
 
 # Convert labels to unique indices
+
+# all_codes = set()
+# for entry in train_data + val_data:
+#     for label in entry["labels"]:
+#         #label = label.strip().replace(" ", "_")
+#         #if "_" in label:
+#         code = label.split("_")[0]
+#         all_codes.add(code)
+# code_list = sorted(all_codes)
+# print (code_list)
+
 all_labels = set()
 for dataset in [train_data, val_data]:
     for entry in dataset:
@@ -98,9 +112,20 @@ config.id2label = id2label
 config.label2id = label2id
 model = AutoModelForSequenceClassification.from_pretrained(model_name, config=config)
 
+# eval metric
+def compute_metrics(pred):
+    preds = (pred.predictions > 0).astype(int)
+    labels = pred.label_ids
+    return {
+        "eval_micro_f1": f1_score(labels, preds, average="micro", zero_division=0),
+        "eval_macro_f1": f1_score(labels, preds, average="macro", zero_division=0),
+        "eval_precision": precision_score(labels, preds, average="micro", zero_division=0),
+        "eval_recall": recall_score(labels, preds, average="micro", zero_division=0),
+    }
+
 training_args = TrainingArguments(
     output_dir= output_dir,        # Where to save the model
-    evaluation_strategy="epoch",      # Evaluate at the end of every epoch
+    eval_strategy="epoch",      # Evaluate at the end of every epoch
     save_strategy="epoch",            # Save model only at the end of each epoch
     num_train_epochs=50,
     per_device_train_batch_size=8,
@@ -109,6 +134,7 @@ training_args = TrainingArguments(
     weight_decay=0.01,
     save_total_limit=1,               # Keep only the last model
     load_best_model_at_end=True,      # Load the best model at the end of training
+    metric_for_best_model="eval_micro_f1", # Choose metric to determine best model
     greater_is_better=True,          # Lower eval_loss is better
     logging_dir="./logs",             # Log directory
     logging_strategy="steps",
@@ -126,6 +152,7 @@ trainer = Trainer(
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
     tokenizer=tokenizer,
+    compute_metrics=compute_metrics
 )
 
 trainer.train()
@@ -144,10 +171,11 @@ with open(os.path.join(output_dir, checkpoint_dir, "trainer_state.json"), "r") a
 log_history = trainer_state["log_history"]
 
 # Extract metrics
+# Extract metrics
 steps = []
 train_loss = []
 eval_loss = []
-
+f1_scores = []
 eval_steps = []
 
 for log in log_history:
@@ -157,12 +185,15 @@ for log in log_history:
     if "eval_loss" in log:
         eval_steps.append(log["step"])
         eval_loss.append(log["eval_loss"])
+        f1_scores.append(log.get("eval_micro_f1", None))
 
 # Plot
 plt.figure(figsize=(12, 6))
 plt.plot(steps, train_loss, label="Train Loss", marker='o')
 plt.plot(eval_steps, eval_loss, label="Eval Loss", marker='x')
 
+if any(f1_scores):
+    plt.plot(eval_steps, f1_scores, label="Eval Micro F1", marker='s')
 
 plt.xlabel("Training Steps")
 plt.ylabel("Metric Value")

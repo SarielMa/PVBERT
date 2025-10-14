@@ -22,16 +22,18 @@ models = [
     "bert-base-uncased",
     "bert-large-uncased",
     "Twitter/twhin-bert-base",
-    "eppc_bert_base",
-    "eppc_bert_large"]
+    "pv_bert_base",
+    "pv_bert_large"]
 
+models = [
+    "pv_bert_large"]
 
 prefix = args.Input
 suffix = "checkpoint-"
 stamp = args.Method # e.g. topic
 csv_res = []
-trainset = f"stratified_train_data_{args.Method}.json"
-testset = f"stratified_test_data_{args.Method}.json"
+trainset = f"data/stratified_train_data_{args.Method}.json"
+testset = f"data/stratified_test_data_{args.Method}.json"
 
 def get_matrix(results, name):
     all_results = pd.concat(results, ignore_index=True)
