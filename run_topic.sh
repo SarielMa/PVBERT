@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RESULT_PATH="/home/lm2445/project_pi_sjf37/lm2445/Bert_PV_classification_1013_New_Sample1-14/samplenew_1_14"
+RESULT_PATH="/home/lm2445/project_pi_sjf37/lm2445/Bert_PV_classification_1013_New_Sample1-14/samplenew_1_14_BWS"
 # bash fine_tune_all.sh topic $RESULT_PATH
 # python eval_all.py -m topic -i "$RESULT_PATH"_topic
 # sleep 604800
