@@ -34,8 +34,8 @@ stamp = args.Method # e.g. topic
 csv_res = []
 # trainset = f"data/stratified_train_data_{args.Method}.json"
 # testset = f"data/stratified_test_data_{args.Method}.json"
-train_path = f"data/stratified_train_data_{args.Method}_remove.json"
-test_path = f"data/stratified_test_data_{args.Method}_remove.json"
+trainset = f"data/stratified_train_data_{args.Method}_remove.json"
+testset = f"data/stratified_test_data_{args.Method}_remove.json"
 def get_matrix(results, name):
     all_results = pd.concat(results, ignore_index=True)
     metrics = ['Precision', 'Recall', 'F1']

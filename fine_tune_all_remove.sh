@@ -12,30 +12,30 @@ RESULT_PATH=$2
 
 # Run each training script one by one
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i pv_bert_large -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i pv_bert_large -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i pv_bert_base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i pv_bert_base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i bert-large-uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i bert-large-uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i bert-base-uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i bert-base-uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i emilyalsentzer/Bio_ClinicalBERT -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i emilyalsentzer/Bio_ClinicalBERT -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i allenai/scibert_scivocab_uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i allenai/scibert_scivocab_uncased -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i dmis-lab/biobert-v1.1 -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i dmis-lab/biobert-v1.1 -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i cambridgeltl/SapBERT-from-PubMedBERT-fulltext -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i cambridgeltl/SapBERT-from-PubMedBERT-fulltext -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "Starting training for one model..."
-python fine_tune_all_remove.py.py -i Twitter/twhin-bert-base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
+python fine_tune_all_remove.py -i Twitter/twhin-bert-base -m "$TOPIC" -p "$RESULT_PATH"_"$TOPIC"
 
 echo "All training jobs completed!"
