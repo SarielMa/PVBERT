@@ -51,6 +51,8 @@ def eval_for_classification(model_path, trainset_path, testset_path, stamp):
             code, subcode = label, ""
         code_list.append(code)
         #if subcode != "None":
+        if subcode == "Clinical care":
+            subcode = "Clinical Care" 
         subcode_list.append(subcode)
     unique_codes = sorted(set(code_list))
     unique_subcodes = sorted(set(subcode_list))

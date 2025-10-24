@@ -52,7 +52,7 @@ def get_confusion_matrix(y_true, y_pred, label_save, classlabel_list, stamp):
     # Save to CSV
     df_metrics = pd.DataFrame(rows)
     #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    #df_metrics.to_csv(stamp + label_save + "_per_label_with_micro_metrics_for_last_model.csv", index=False)
+    df_metrics.to_csv(stamp + label_save + "_per_label_with_micro_metrics_for_last_model.csv", index=False)
     return df_metrics
     
 
@@ -75,24 +75,24 @@ def compute_classification_metric(preds, true_labels, what, label_list, stamp):
     matrix = get_confusion_matrix(true_labels, preds, what, label_list, stamp)
     return [prec, recall, f1], matrix
 
-def compute_classification_metric_with_matrix(preds, true_labels, id2label=None):
-    y_true = np.array(true_labels)
-    y_pred = np.array(preds)
-    f1 = f1_score(y_true, y_pred, average='micro', zero_division=0)
-    prec = precision_score(y_true, y_pred, average='micro', zero_division=0)
-    recall = recall_score(y_true, y_pred, average='micro', zero_division=0)
+# def compute_classification_metric_with_matrix(preds, true_labels, id2label=None):
+#     y_true = np.array(true_labels)
+#     y_pred = np.array(preds)
+#     f1 = f1_score(y_true, y_pred, average='micro', zero_division=0)
+#     prec = precision_score(y_true, y_pred, average='micro', zero_division=0)
+#     recall = recall_score(y_true, y_pred, average='micro', zero_division=0)
 
-    print("Micro F1     :", f1)
-    print("Precision    :", prec)
-    print("Recall       :", recall)
+#     print("Micro F1     :", f1)
+#     print("Precision    :", prec)
+#     print("Recall       :", recall)
 
-    if id2label:
-        print("\n Label-wise counts:")
-        for i, label in id2label.items():
-            tp = np.sum((y_true[:, i] == 1) & (y_pred[:, i] == 1))
-            print(f"{label:30s} | TP={tp}")
+#     if id2label:
+#         print("\n Label-wise counts:")
+#         for i, label in id2label.items():
+#             tp = np.sum((y_true[:, i] == 1) & (y_pred[:, i] == 1))
+#             print(f"{label:30s} | TP={tp}")
 
-    return [prec, recall, f1]
+#     return [prec, recall, f1]
 
 
 def calculate_jaccard_for_tokens(phrase1, phrase2):

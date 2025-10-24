@@ -25,8 +25,8 @@ models = [
     "pv_bert_base",
     "pv_bert_large"]
 
-# models = [
-#     "pv_bert_large"]
+models = [
+    "pv_bert_large"]
 
 prefix = args.Input
 suffix = "checkpoint-"
