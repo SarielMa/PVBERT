@@ -25,10 +25,9 @@ models = [
     "pv_bert_base",
     "pv_bert_large"]
 
-models = [
-    "Twitter/twhin-bert-base",
-    "pv_bert_base",
-    "pv_bert_large"]
+# models = [
+#     "pv_bert_base",
+#     "pv_bert_large"]
 
 prefix = args.Input
 suffix = "checkpoint-"
@@ -57,8 +56,8 @@ for i, m in enumerate(models):
     for run in os.listdir(prefix):
         path = os.path.join(prefix, run, subpath)
         for name in os.listdir(path):
-            if os.path.isdir(os.path.join(path, name)) and name.startswith(suffix)
-                folders.append(name)
+            if os.path.isdir(os.path.join(path, name)) and name.startswith(suffix):
+                folders.append(os.path.join(path, name))
     # folders = [name for name in os.listdir(prefix)
     #        if os.path.isdir(os.path.join(path, name)) and name.startswith(suffix)]
     results = []
@@ -66,8 +65,9 @@ for i, m in enumerate(models):
     subcodem = []
     combom = []
     print ("folders ", folders)
-    for j, folder in enumerate(folders):
-        new_path = os.path.join(path, folder)
+    for j, new_path in enumerate(folders):
+        #new_path = os.path.join(path, folder)
+        print (f"new_path is {new_path}")
         res = []
         res, m1, m2, m3 = my_eval(new_path, trainset, testset, stamp + str(j))
         results.append(res)

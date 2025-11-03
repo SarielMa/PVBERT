@@ -42,6 +42,8 @@ elif args.Input:
     output_dir = base_path + "/pv_model_" + args.Input
 else:
     raise Exception("Please choose a model")
+my_seed = int(base_path.split("_")[-1])
+print ("the seed is ", my_seed)
 # Load Tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -127,7 +129,7 @@ training_args = TrainingArguments(
     output_dir= output_dir,        # Where to save the model
     eval_strategy="epoch",      # Evaluate at the end of every epoch
     save_strategy="epoch",            # Save model only at the end of each epoch
-    num_train_epochs=3,
+    num_train_epochs=75,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     learning_rate=5e-5,
@@ -143,6 +145,8 @@ training_args = TrainingArguments(
     warmup_ratio=0.1,                 # 10% of the total steps warmup
     lr_scheduler_type="linear",       # linear decay
     # report_to="tensorboard",          # optional
+    seed = my_seed,
+    data_seed = my_seed
 )
 
 # Train Model
