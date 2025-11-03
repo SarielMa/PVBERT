@@ -127,15 +127,15 @@ training_args = TrainingArguments(
     output_dir= output_dir,        # Where to save the model
     eval_strategy="epoch",      # Evaluate at the end of every epoch
     save_strategy="epoch",            # Save model only at the end of each epoch
-    num_train_epochs=75,
+    num_train_epochs=3,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     learning_rate=5e-5,
     weight_decay=0.01,
     save_total_limit=1,               # Keep only the last model
-    load_best_model_at_end=True,      # Load the best model at the end of training
-    metric_for_best_model="eval_micro_f1", # Choose metric to determine best model
-    greater_is_better=True,          # Lower eval_loss is better
+    #load_best_model_at_end=True,      # Load the best model at the end of training
+    #metric_for_best_model="eval_micro_f1", # Choose metric to determine best model
+    #greater_is_better=True,          # Lower eval_loss is better
     logging_dir="./logs",             # Log directory
     logging_strategy="steps",
     logging_steps=10,                 # Log every 10 steps
@@ -152,7 +152,7 @@ trainer = Trainer(
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
     tokenizer=tokenizer,
-    compute_metrics=compute_metrics
+    #compute_metrics=compute_metrics
 )
 
 trainer.train()

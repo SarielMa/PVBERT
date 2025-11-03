@@ -25,8 +25,10 @@ models = [
     "pv_bert_base",
     "pv_bert_large"]
 
-# models = [
-#     "pv_bert_large"]
+models = [
+    "Twitter/twhin-bert-base",
+    "pv_bert_base",
+    "pv_bert_large"]
 
 prefix = args.Input
 suffix = "checkpoint-"
@@ -49,26 +51,34 @@ def get_matrix(results, name):
         
 for i, m in enumerate(models):
     subpath = "pv_model_" + m
-    path = os.path.join(prefix, subpath)
-    print (path)
-    folders = [name for name in os.listdir(path)
-           if os.path.isdir(os.path.join(path, name)) and name.startswith(suffix)]
+    #path = os.path.join(prefix, subpath)
+    #print (path)
+    folders = []
+    for run in os.listdir(prefix):
+        path = os.path.join(prefix, run, subpath)
+        for name in os.listdir(path):
+            if os.path.isdir(os.path.join(path, name)) and name.startswith(suffix)
+                folders.append(name)
+    # folders = [name for name in os.listdir(prefix)
+    #        if os.path.isdir(os.path.join(path, name)) and name.startswith(suffix)]
     results = []
     codem = []
     subcodem = []
     combom = []
     print ("folders ", folders)
-    for i, folder in enumerate(folders):
+    for j, folder in enumerate(folders):
         new_path = os.path.join(path, folder)
         res = []
-        res, m1, m2, m3 = my_eval(new_path, trainset, testset, stamp + str(i))
+        res, m1, m2, m3 = my_eval(new_path, trainset, testset, stamp + str(j))
         results.append(res)
         codem.append(m1)
         subcodem.append(m2)
         combom.append(m3)
-    get_matrix(codem, stamp + "code")
-    get_matrix(subcodem, stamp + "subcode")
-    get_matrix(combom, stamp + "combo")
+    if i == len(models) - 1: 
+        # only compute the last method's matrix
+        get_matrix(codem, stamp + "code")
+        get_matrix(subcodem, stamp + "subcode")
+        get_matrix(combom, stamp + "combo")
     #compute the major table
     results = np.array(results)
     means = np.mean(results, axis=0)

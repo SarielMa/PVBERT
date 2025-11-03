@@ -2,7 +2,7 @@
   
 
 #SBATCH --job-name=bert_topic
-#SBATCH --time=6:00:00
+#SBATCH --time=20:00:00
 #SBATCH --mail-user=linhai.ma@yale.edu
 #SBATCH --mail-type=ALL
 #SBATCH --nodes=1
