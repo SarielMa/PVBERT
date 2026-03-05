@@ -4,10 +4,11 @@ This repository contains the official implementation of **Patient voice Miner**,
 
 ---
 
-## 📄 Paper
+## Paper
 
-> *[Insert paper title and link here]*  
-> *Authors: [Your Name(s)]*
+PVminer: A Domain-Specific Tool to Detect the Patient Voice in Patient Generated Data
+
+https://arxiv.org/abs/2602.21165
 
 ---
 
@@ -77,7 +78,17 @@ All dependencies are listed in [`environment.yml`](./environment.yml).
 
 ## Citation
 
-If you use this code or models in your work, please cite our paper (citation info to be added upon publication).
+If you use this code or models in your work, please cite our paper:
+
+@misc{fodeh2026pvminerdomainspecifictooldetect,
+      title={PVminer: A Domain-Specific Tool to Detect the Patient Voice in Patient Generated Data}, 
+      author={Samah Fodeh and Linhai Ma and Yan Wang and Srivani Talakokkul and Ganesh Puthiaraju and Afshan Khan and Ashley Hagaman and Sarah Lowe and Aimee Roundtree},
+      year={2026},
+      eprint={2602.21165},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2602.21165}, 
+}
 
 
 
