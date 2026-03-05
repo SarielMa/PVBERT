@@ -35,14 +35,14 @@ conda activate amia2025  # or your environment name
 
 ### 2. Data Preprocessing
 
-- For **baseline fine-tuning**:
+<!-- - For **baseline fine-tuning**:
   ```bash
   Run: data_preprocessing_get_original.ipynb
-  ```
+  ``` -->
 
-- For **PPCInsight fine-tuning**:
+- For **Topic model based fine-tuning**:
   ```bash
-  Run: data_preprocessing_for_PPCInsight.ipynb
+  Run: data_preprocessing_for_Ours.ipynb
   ```
 
 ### 3. Set Output Directory
@@ -50,7 +50,7 @@ conda activate amia2025  # or your environment name
 Open `run.sh` and modify the following line to specify where to store the results:
 
 ```bash
-export RESULT_PATH=/your/output/path
+RESULT_PATH=/your/output/path
 ```
 
 ### 4. Run Fine-tuning and Evaluation
